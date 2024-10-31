@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+rm -fr "$ASDF_INSTALL_PATH" || fail "Error uninstalling $ASDF_INSTALL_VERSION"

@@ -2,10 +2,41 @@
 
 set -euo pipefail
 
-current_script_path=${BASH_SOURCE[0]}
-plugin_dir=$(dirname "$(dirname "$current_script_path")")
+# shellcheck source=bin/includes.bash
+source "$(dirname "$BASH_SOURCE")/includes.bash"
 
-# shellcheck source=./lib/utils.bash
-source "${plugin_dir}/lib/utils.bash"
+mkdir -p "$ASDF_INSTALL_PATH"
 
-install_version "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+(
+    case "$(uname -s)" in
+        Darwin)
+            arch="$(uname -m | sed s/arm64/aarch64/)"
+            hdiutil attach -nobrowse -quiet \
+                "$github_repo/releases/download/v$ASDF_INSTALL_VERSION/Zed-$arch.dmg"
+            cp -a /Volumes/Zed/Zed.app "$ASDF_INSTALL_PATH/"
+            hdiutil detach -quiet /Volumes/Zed
+            mkdir $ASDF_INSTALL_PATH/bin
+            cat>$ASDF_INSTALL_PATH/bin/zed<<EOD
+#!/usr/bin/env bash
+$ASDF_INSTALL_PATH/Zed.app/Contents/MacOS/zed
+EOD
+            chmod +x $ASDF_INSTALL_PATH/bin/zed
+            ;;
+        Linux)
+            curl \
+                --fail \
+                --header "$(token)" \
+                --location \
+                --show-error \
+                --silent \
+                "$github_repo/releases/download/v$ASDF_INSTALL_VERSION/linux-$(uname -m).tar.gz" \
+            | tar \
+                --directory "$ASDF_INSTALL_PATH" \
+                --extract \
+                --gzip \
+                --strip-components=1 \
+            ;;
+        *)
+            fail "$(uname -s) is unsupported"
+    esac
+) || fail "Error installing $ASDF_INSTALL_VERSION"

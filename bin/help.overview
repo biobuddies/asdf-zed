@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+echo "Zed is a next-generation code editor designed for high-performance collaboration with humans and AI."

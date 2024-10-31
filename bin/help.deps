@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+cat <<EOD
+curl
+git
+sed
+EOD
+[[ $(uname -s) == Linux ]] && echo tar
