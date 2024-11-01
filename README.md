@@ -1,4 +1,5 @@
 <div align="center">
+
 # asdf-zed [![Build](https://github.com/biobuddies/asdf-zed/actions/workflows/build.yml/badge.svg)](https://github.com/biobuddies/asdf-zed/actions/workflows/build.yml) [![Lint](https://github.com/biobuddies/asdf-zed/actions/workflows/lint.yml/badge.svg)](https://github.com/biobuddies/asdf-zed/actions/workflows/lint.yml)
 
 [zed](https://zed.dev/) plugin for the [asdf version manager](https://asdf-vm.com).
