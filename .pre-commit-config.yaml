@@ -12,6 +12,7 @@ repos:
           - id: dot-yaml
           - id: includes-sh
           - id: mailmap
+          - id: prettier-write
           - id: shellcheck
           - id: shfmt
           - id: uv-pip-check
