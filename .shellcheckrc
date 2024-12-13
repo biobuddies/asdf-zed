@@ -1,1 +1,0 @@
-disable=SC2119  # sourcing includes.sh without arguments is common
