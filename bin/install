@@ -9,13 +9,12 @@ download="https://github.com/zed-industries/zed/releases/download/v$ASDF_INSTALL
 (
     case "$(uname -s)" in
         Darwin)
-            arch="$(uname -m | sed s/arm64/aarch64/)"
-            hdiutil attach -nobrowse -quiet "$download/Zed-$arch.dmg"
+            hdiutil attach -nobrowse -quiet "$download/Zed-$(uname -m | sed s/arm64/aarch64/).dmg"
             cp -a /Volumes/Zed/Zed.app "$ASDF_INSTALL_PATH/"
             hdiutil detach -quiet /Volumes/Zed
             mkdir "$ASDF_INSTALL_PATH/bin"
             cat >"$ASDF_INSTALL_PATH/bin/zed" <<EOD
-#!/usr/bin/env bash
+#!/bin/sh
 $ASDF_INSTALL_PATH/Zed.app/Contents/MacOS/zed
 EOD
             chmod +x "$ASDF_INSTALL_PATH/bin/zed"
