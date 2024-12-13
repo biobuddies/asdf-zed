@@ -21,7 +21,7 @@ repos:
     - repo: local
       hooks:
           - id: actionlint
-            # Neither comments in check.yaml nor .shellcheckrc seem work
+            # Neither comments in check.yaml nor .shellcheckrc seem to work
             # Sourcing includes.sh without arguments is common
             entry: env SHELLCHECK_OPTS=--exclude=SC2119 actionlint
             files: ^\.github/workflows/
