@@ -17,3 +17,14 @@ repos:
           - id: uv-pip-check
           - id: uv-pip-compile
           - id: yamllint
+    - repo: local
+      hooks:
+          - id: actionlint
+            # Neither comments in check.yaml nor .shellcheckrc seem work
+            # Sourcing includes.sh without arguments is common
+            entry: env SHELLCHECK_OPTS=--exclude=SC2119 actionlint
+            files: ^\.github/workflows/
+            language: system
+            name: actionlint
+            types:
+                - yaml

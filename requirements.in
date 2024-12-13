@@ -1,4 +1,5 @@
 # pre-commit Hooks
+actionlint-py
 codespell
 pre-commit
 shellcheck-py
