@@ -7,12 +7,13 @@ source "$(dirname "$BASH_SOURCE")/includes.bash"
 
 mkdir -p "$ASDF_INSTALL_PATH"
 
+download="$github_repo/releases/download/v$ASDF_INSTALL_VERSION"
+
 (
     case "$(uname -s)" in
         Darwin)
             arch="$(uname -m | sed s/arm64/aarch64/)"
-            hdiutil attach -nobrowse -quiet \
-                "$github_repo/releases/download/v$ASDF_INSTALL_VERSION/Zed-$arch.dmg"
+            hdiutil attach -nobrowse -quiet "$download/Zed-$arch.dmg"
             cp -a /Volumes/Zed/Zed.app "$ASDF_INSTALL_PATH/"
             hdiutil detach -quiet /Volumes/Zed
             mkdir "$ASDF_INSTALL_PATH/bin"
@@ -29,7 +30,7 @@ EOD
                 --location \
                 --show-error \
                 --silent \
-                "$github_repo/releases/download/v$ASDF_INSTALL_VERSION/linux-$(uname -m).tar.gz" \
+                "$download/zed-linux-$(uname -m).tar.gz" \
                 | tar \
                     --directory "$ASDF_INSTALL_PATH" \
                     --extract \
