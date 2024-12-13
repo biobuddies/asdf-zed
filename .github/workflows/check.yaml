@@ -1,12 +1,12 @@
 jobs:
-    plugin_test-macos:
+    plugin-test-macos:
         runs-on: macos-latest
         steps:
             - uses: asdf-vm/actions/plugin-test@v2
               with:
                   command: zed --help
 
-    plugin_test-ubuntu:
+    plugin-test-ubuntu:
         runs-on: ubuntu-latest
         steps:
             - uses: asdf-vm/actions/plugin-test@v2
