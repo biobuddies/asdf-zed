@@ -2,12 +2,9 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/includes.bash disable=SC2128
-source "$(dirname "$BASH_SOURCE")/includes.bash"
-
 mkdir -p "$ASDF_INSTALL_PATH"
 
-download="$github_repo/releases/download/v$ASDF_INSTALL_VERSION"
+download="https://github.com/zed-industries/zed/releases/download/v$ASDF_INSTALL_VERSION"
 
 (
     case "$(uname -s)" in
@@ -24,9 +21,12 @@ EOD
             chmod +x "$ASDF_INSTALL_PATH/bin/zed"
             ;;
         Linux)
+            set -x
             curl \
                 --fail \
-                --header "$(token)" \
+                --header "$(
+                    [[ ${GITHUB_API_TOKEN-} ]] && echo Authorization: token $GITHUB_API_TOKEN
+                )" \
                 --location \
                 --show-error \
                 --silent \
@@ -41,4 +41,7 @@ EOD
             fail "$(uname -s) is unsupported"
             ;;
     esac
-) || fail "Error installing $ASDF_INSTALL_VERSION"
+) && exit 0
+
+echo "asdf-zed: Error installing $ASDF_INSTALL_VERSION"
+exit 1
