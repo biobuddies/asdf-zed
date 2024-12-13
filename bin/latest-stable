@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/includes.bash
+# shellcheck source=bin/includes.bash disable=SC2128
 source "$(dirname "$BASH_SOURCE")/includes.bash"
 
 curl --head --header "$(token)" --silent "$github_repo/releases/latest" \

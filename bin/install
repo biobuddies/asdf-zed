@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/includes.bash
+# shellcheck source=bin/includes.bash disable=SC2128
 source "$(dirname "$BASH_SOURCE")/includes.bash"
 
 mkdir -p "$ASDF_INSTALL_PATH"
@@ -15,12 +15,12 @@ mkdir -p "$ASDF_INSTALL_PATH"
                 "$github_repo/releases/download/v$ASDF_INSTALL_VERSION/Zed-$arch.dmg"
             cp -a /Volumes/Zed/Zed.app "$ASDF_INSTALL_PATH/"
             hdiutil detach -quiet /Volumes/Zed
-            mkdir $ASDF_INSTALL_PATH/bin
-            cat>$ASDF_INSTALL_PATH/bin/zed<<EOD
+            mkdir "$ASDF_INSTALL_PATH/bin"
+            cat >"$ASDF_INSTALL_PATH/bin/zed" <<EOD
 #!/usr/bin/env bash
 $ASDF_INSTALL_PATH/Zed.app/Contents/MacOS/zed
 EOD
-            chmod +x $ASDF_INSTALL_PATH/bin/zed
+            chmod +x "$ASDF_INSTALL_PATH/bin/zed"
             ;;
         Linux)
             curl \
@@ -30,13 +30,14 @@ EOD
                 --show-error \
                 --silent \
                 "$github_repo/releases/download/v$ASDF_INSTALL_VERSION/linux-$(uname -m).tar.gz" \
-            | tar \
-                --directory "$ASDF_INSTALL_PATH" \
-                --extract \
-                --gzip \
-                --strip-components=1 \
+                | tar \
+                    --directory "$ASDF_INSTALL_PATH" \
+                    --extract \
+                    --gzip \
+                    --strip-components=1
             ;;
         *)
             fail "$(uname -s) is unsupported"
+            ;;
     esac
 ) || fail "Error installing $ASDF_INSTALL_VERSION"
