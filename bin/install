@@ -37,7 +37,8 @@ EOD
                     --strip-components=1
             ;;
         *)
-            fail "$(uname -s) is unsupported"
+            echo "asdf-zed: $(uname -s) is unsupported"
+            exit 1
             ;;
     esac
 ) && exit 0
