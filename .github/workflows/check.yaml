@@ -19,7 +19,6 @@ jobs:
             - uses: actions/checkout@v4
             - uses: asdf-vm/actions/install@v2
             - uses: astral-sh/setup-uv@v4
-            # shellcheck disable=SC2119
             - run: source includes.sh && uv venv && a && ups && pcam
 
 on: # yamllint disable-line rule:truthy
