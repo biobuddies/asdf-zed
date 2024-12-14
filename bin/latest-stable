@@ -10,6 +10,6 @@ else
 fi
 
 # shellcheck disable=SC2086
-curl --head $header \
+curl --head $header --silent \
     https://github.com/zed-industries/zed/releases/latest \
     | sed -En "s|^location: [-./:a-z]+/tag/v(.+)\r$|\1|p"

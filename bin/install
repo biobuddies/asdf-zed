@@ -32,7 +32,6 @@ EOD
                 $header \
                 --location \
                 --show-error \
-                --silent \
                 "$download/zed-linux-$(uname -m).tar.gz" \
                 | tar \
                     --directory "$ASDF_INSTALL_PATH" \
