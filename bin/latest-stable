@@ -2,7 +2,13 @@
 
 set -euo pipefail
 
-curl --head --header "$(
-    [[ ${GITHUB_API_TOKEN-} ]] && echo "Authorization: token $GITHUB_API_TOKEN"
-)" --silent https://github.com/zed-industries/zed/releases/latest \
+if [[ ${GITHUB_API_TOKEN-} ]]; then
+    header="--header Authorization: token $GITHUB_API_TOKEN"
+else
+    header=""
+fi
+
+# shellcheck disable=SC2086
+curl --head $header \
+    https://github.com/zed-industries/zed/releases/latest \
     | sed -En "s|^location: [-./:a-z]+/tag/v(.+)\r$|\1|p"
