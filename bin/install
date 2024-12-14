@@ -4,6 +4,7 @@ set -euo pipefail
 
 mkdir -p "$ASDF_INSTALL_PATH"
 
+# DUP bin/latest-stable
 if [[ ${GITHUB_API_TOKEN-} ]]; then
     header="--header Authorization: token $GITHUB_API_TOKEN"
 else
