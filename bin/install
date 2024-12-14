@@ -24,7 +24,7 @@ EOD
             curl \
                 --fail \
                 --header "$(
-                    [[ ${GITHUB_API_TOKEN-} ]] && echo Authorization: token $GITHUB_API_TOKEN
+                    [[ ${GITHUB_API_TOKEN-} ]] && echo "Authorization: token $GITHUB_API_TOKEN"
                 )" \
                 --location \
                 --show-error \
