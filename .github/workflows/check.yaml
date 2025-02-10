@@ -1,0 +1,33 @@
+jobs:
+    plugin-test-macos:
+        runs-on: macos-latest
+        steps:
+            - uses: asdf-vm/actions/plugin-test@v2
+              with:
+                  command: zed --help
+
+    plugin-test-ubuntu:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: asdf-vm/actions/plugin-test@v2
+              with:
+                  command: zed --help
+
+    pre-commit:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: asdf-vm/actions/install@v2
+            - uses: astral-sh/setup-uv@v4
+            - uses: actions/setup-node@v4
+              with:
+                  cache: npm
+                  node-version-file: .nvmrc
+            - run: npm install --frozen-lockfile
+            - run: source includes.sh && uv venv && a && ups && pcam
+
+on: # yamllint disable-line rule:truthy
+    push:
+        branches:
+            - main
+    pull_request:

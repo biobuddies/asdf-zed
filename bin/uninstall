@@ -2,4 +2,7 @@
 
 set -euo pipefail
 
-rm -fr "$ASDF_INSTALL_PATH" || fail "Error uninstalling $ASDF_INSTALL_VERSION"
+rm -fr "$ASDF_INSTALL_PATH" && exit 0
+
+echo "asdf-zed: Error uninstalling $ASDF_INSTALL_VERSION"
+exit 1

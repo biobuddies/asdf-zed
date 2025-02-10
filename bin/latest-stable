@@ -2,8 +2,14 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/includes.bash
-source "$(dirname "$BASH_SOURCE")/includes.bash"
+# DUP bin/install
+if [[ ${GITHUB_API_TOKEN-} ]]; then
+    header="--header Authorization: token $GITHUB_API_TOKEN"
+else
+    header=""
+fi
 
-curl --head --header "$(token)" --silent "$github_repo/releases/latest" \
-    | sed -En "s|^location: $github_repo/releases/tag/v(.+)\r$|\1|p"
+# shellcheck disable=SC2086
+curl --head $header --silent \
+    https://github.com/zed-industries/zed/releases/latest \
+    | sed -En "s|^location: [-./:a-z]+/tag/v(.+)\r$|\1|p"

@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/includes.bash
-source "$(dirname "$BASH_SOURCE")/includes.bash"
-
-git ls-remote --tags --refs $github_repo refs/tags/v\* \
+git ls-remote --tags --refs https://github.com/zed-industries/zed refs/tags/v\* \
     | sed -E 's|.+refs/tags/v||; /-pre/d; /0.9999/d' \
     | xargs echo

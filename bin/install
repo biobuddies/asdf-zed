@@ -2,41 +2,49 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/includes.bash
-source "$(dirname "$BASH_SOURCE")/includes.bash"
-
 mkdir -p "$ASDF_INSTALL_PATH"
+
+# DUP bin/latest-stable
+if [[ ${GITHUB_API_TOKEN-} ]]; then
+    header="--header Authorization: token $GITHUB_API_TOKEN"
+else
+    header=""
+fi
+download="https://github.com/zed-industries/zed/releases/download/v$ASDF_INSTALL_VERSION"
 
 (
     case "$(uname -s)" in
         Darwin)
-            arch="$(uname -m | sed s/arm64/aarch64/)"
-            hdiutil attach -nobrowse -quiet \
-                "$github_repo/releases/download/v$ASDF_INSTALL_VERSION/Zed-$arch.dmg"
+            hdiutil attach -nobrowse -quiet "$download/Zed-$(uname -m | sed s/arm64/aarch64/).dmg"
             cp -a /Volumes/Zed/Zed.app "$ASDF_INSTALL_PATH/"
             hdiutil detach -quiet /Volumes/Zed
-            mkdir $ASDF_INSTALL_PATH/bin
-            cat>$ASDF_INSTALL_PATH/bin/zed<<EOD
-#!/usr/bin/env bash
+            mkdir "$ASDF_INSTALL_PATH/bin"
+            cat >"$ASDF_INSTALL_PATH/bin/zed" <<EOD
+#!/bin/sh
 $ASDF_INSTALL_PATH/Zed.app/Contents/MacOS/zed
 EOD
-            chmod +x $ASDF_INSTALL_PATH/bin/zed
+            chmod +x "$ASDF_INSTALL_PATH/bin/zed"
             ;;
         Linux)
+            # shellcheck disable=SC2086
             curl \
                 --fail \
-                --header "$(token)" \
+                $header \
                 --location \
                 --show-error \
-                --silent \
-                "$github_repo/releases/download/v$ASDF_INSTALL_VERSION/linux-$(uname -m).tar.gz" \
-            | tar \
-                --directory "$ASDF_INSTALL_PATH" \
-                --extract \
-                --gzip \
-                --strip-components=1 \
+                "$download/zed-linux-$(uname -m).tar.gz" \
+                | tar \
+                    --directory "$ASDF_INSTALL_PATH" \
+                    --extract \
+                    --gzip \
+                    --strip-components=1
             ;;
         *)
-            fail "$(uname -s) is unsupported"
+            echo "asdf-zed: $(uname -s) is unsupported"
+            exit 1
+            ;;
     esac
-) || fail "Error installing $ASDF_INSTALL_VERSION"
+) && exit 0
+
+echo "asdf-zed: Error installing $ASDF_INSTALL_VERSION"
+exit 1

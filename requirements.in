@@ -1,0 +1,9 @@
+# pre-commit Hooks
+actionlint-py
+codespell
+pre-commit
+shellcheck-py
+shfmt-py
+uv
+validate-pyproject[all]
+yamllint
