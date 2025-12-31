@@ -19,13 +19,13 @@ asdf plugin add zed https://github.com/biobuddies/asdf-zed.git
 zed:
 ```shell
 # Show all installable versions
-asdf list-all zed
+asdf list all zed
 
 # Install specific version
 asdf install zed latest
 
 # Set a version globally (on your ~/.tool-versions file)
-asdf global zed latest
+asdf set --home zed latest
 
 # Now zed commands are available
 zed --help

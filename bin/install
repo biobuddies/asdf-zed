@@ -12,6 +12,7 @@ else
 fi
 download="https://github.com/zed-industries/zed/releases/download/v$ASDF_INSTALL_VERSION"
 
+echo "* Installing zed $ASDF_INSTALL_VERSION"
 (
     case "$(uname -s)" in
         Darwin)
